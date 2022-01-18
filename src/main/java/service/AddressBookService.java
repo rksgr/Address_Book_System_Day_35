@@ -58,4 +58,23 @@ public class AddressBookService {
         addressBook.getAddressBookList().add(contact);
         return addressBook;
     }
+    /*
+    Use Case 3: Edit existing contact person using their name
+     */
+    public AddressBook editExistingContact(AddressBook addressBook, String person_first_name,String person_last_name,
+                                           Contact contact){
+        int size = addressBook.getAddressBookList().size();
+        for (int i=0;i<size;i++){
+
+            // Get first name and last name of various contacts
+            String first_name = addressBook.getAddressBookList().get(i).getFirst_name();
+            String last_name = addressBook.getAddressBookList().get(i).getLast_name();
+
+            // If name matches change the contact details
+            if ((person_first_name.equals(first_name)) && (person_last_name.equals(last_name))){
+                addressBook.getAddressBookList().set(i,contact);
+            }
+        }
+        return addressBook;
+    }
 }
