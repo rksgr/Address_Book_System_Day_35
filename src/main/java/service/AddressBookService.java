@@ -1,6 +1,7 @@
 package service;
 
 import model.AddressBook;
+import model.AddressBookSystem;
 import model.Contact;
 import java.util.Scanner;
 
@@ -107,4 +108,27 @@ public class AddressBookService {
         }
         return addressBook;
     }
+
+    /*
+    Use Case 6: Add multiple address book to system
+     */
+    public AddressBookSystem addMultipleAddressBook(AddressBookSystem addressBookSystem, int no_of_addrbooks){
+
+        // The loop runs for as many times as the number of address books
+        for(int i=0;i<no_of_addrbooks;i++) {
+            AddressBook addressBook = new AddressBook();
+            System.out.println("Enter the name of the given address book.");
+            Scanner sc1 = new Scanner(System.in);
+            String addr_book_name = sc1.next();
+
+            System.out.println("Enter the number of persons to be added to the given address book.");
+            Scanner sc2 = new Scanner(System.in);
+            int no_of_persons = sc2.nextInt();
+
+            //Add each address book to the dictionary
+            addressBookSystem.getAddressBookMap().put(addr_book_name, addMultiplePerson(addressBook,no_of_persons));
+        }
+        return addressBookSystem;
+    }
+
 }
