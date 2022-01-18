@@ -96,4 +96,15 @@ public class AddressBookService {
         addressBook.getAddressBookList().remove(index);
         return addressBook;
     }
+
+    /*
+    Use Case 5: Add multiple persons to address book
+     */
+    public AddressBook addMultiplePerson(AddressBook addressBook, int no_of_persons){
+        // The loop runs for as many times as the number of persons
+        for(int i=0;i<no_of_persons;i++){
+            addContactUsingConsole(addressBook);
+        }
+        return addressBook;
+    }
 }
