@@ -46,4 +46,30 @@ public class AddressBookTest {
 
         Assertions.assertEquals(zip_edited,5555);
     }
+    /*
+    Use Case 4: Delete a person in address book using name of person
+     */
+    @Test
+    public void whenContactDeleted_addressBookSize_ReducesByOne(){
+        Contact contact1 = new Contact("Arun","kumar","Leadenhall Street","London",
+                "England",111,89898989,"arun.kumar@gmail.com");
+        Contact contact2 = new Contact("Manish","kumar","Mackenzie Street","Kent",
+                "England",5555,77777777,"manish.kumar1234@gmail.com");
+        AddressBook addressBook = new AddressBook();
+        AddressBookService addressBookService = new AddressBookService();
+
+        // Add contacts to the address book
+        addressBookService.createContact(addressBook,contact1);
+        addressBookService.createContact(addressBook,contact2);
+
+        // compare size before and after deletion
+        int size_bef_del = addressBook.getAddressBookList().size();
+
+        // Delete the contact
+        addressBookService.deleteExistingContact(addressBook,"Arun","kumar");
+
+        int size_aft_del = addressBook.getAddressBookList().size();
+
+        Assertions.assertEquals(size_aft_del,size_bef_del-1);
+    }
 }
