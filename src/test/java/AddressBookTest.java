@@ -72,4 +72,5 @@ public class AddressBookTest {
 
         Assertions.assertEquals(size_aft_del,size_bef_del-1);
     }
+
 }
