@@ -58,23 +58,42 @@ public class AddressBookService {
         addressBook.getAddressBookList().add(contact);
         return addressBook;
     }
+
     /*
     Use Case 3: Edit existing contact person using their name
      */
     public AddressBook editExistingContact(AddressBook addressBook, String person_first_name,String person_last_name,
                                            Contact contact){
-        int size = addressBook.getAddressBookList().size();
+        int index = searchExistingContact(addressBook, person_first_name,person_last_name);
+        addressBook.getAddressBookList().set(index,contact);
+        return addressBook;
+    }
+
+    // Search for a given person in the address book
+    public int searchExistingContact(AddressBook addressBook, String person_first_name,String person_last_name){
+        int index = -1, size = addressBook.getAddressBookList().size();
         for (int i=0;i<size;i++){
 
             // Get first name and last name of various contacts
             String first_name = addressBook.getAddressBookList().get(i).getFirst_name();
             String last_name = addressBook.getAddressBookList().get(i).getLast_name();
 
-            // If name matches change the contact details
+            // If name matches get the index of the contact
             if ((person_first_name.equals(first_name)) && (person_last_name.equals(last_name))){
-                addressBook.getAddressBookList().set(i,contact);
+                index = i;
+                break;
             }
         }
+        return index;
+    }
+
+    /*
+    Use Case 4: Delete a person using person's name
+     */
+    public AddressBook deleteExistingContact(AddressBook addressBook, String person_first_name,String person_last_name){
+        // Fetch the index of the contact to be deleted
+        int index = searchExistingContact(addressBook, person_first_name,person_last_name);
+        addressBook.getAddressBookList().remove(index);
         return addressBook;
     }
 }
