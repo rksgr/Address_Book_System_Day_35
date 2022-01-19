@@ -72,5 +72,39 @@ public class AddressBookTest {
 
         Assertions.assertEquals(size_aft_del,size_bef_del-1);
     }
+    /*
+    Use Case 7:Prevent duplicate entry of the same person in a particular address book
+     */
+    @Test
+    public void whenAContactAlreadyPresentInAddressBook_ifAdded_itShouldNotGetAdded(){
+        Contact contact1 = new Contact("Arun","kumar","Leadenhall Street","London",
+                "England",111,89898989,"arun.kumar@gmail.com");
+        AddressBook addressBook = new AddressBook();
+        AddressBookService addressBookService = new AddressBookService();
 
+        // Add contacts to the address book
+        addressBookService.createContact(addressBook,contact1);
+
+
+        // compare size before and after deletion
+        int size_bef_contct_add = addressBook.getAddressBookList().size();
+
+        //Add new contact
+        Contact contact2 = new Contact("Manish","kumar","Mackenzie Street","Kent",
+                "England",5555,77777777,"manish.kumar1234@gmail.com");
+        addressBookService.preventDuplicateEntry(addressBook,contact2);
+        int size_aft_contct_add = addressBook.getAddressBookList().size();
+
+        // Add duplicate contact
+        Contact contact3 = new Contact("Arun","kumar","Leadenhall Street","London",
+                "England",111,89898989,"arun.kumar@gmail.com");
+        addressBookService.preventDuplicateEntry(addressBook,contact3);
+        int size_aft_duplicate_contct_add = addressBook.getAddressBookList().size();
+
+        // size of address book should increase by one after addition of contact
+        Assertions.assertEquals(size_bef_contct_add + 1,size_aft_contct_add);
+
+        // size of address book should not increase after addition of duplicate contact
+        Assertions.assertEquals(size_aft_contct_add,size_aft_duplicate_contct_add);
+    }
 }
