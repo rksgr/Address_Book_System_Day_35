@@ -130,5 +130,17 @@ public class AddressBookService {
         }
         return addressBookSystem;
     }
+    /*
+    Use Case 7: Prevent duplicate entry of the same person in a particular address book
+     */
+    public AddressBook preventDuplicateEntry(AddressBook addressBook,Contact contact){
+        int index = -1;
+        // search for the person in the address book
+        index = searchExistingContact(addressBook, contact.getFirst_name(), contact.getLast_name());
+        if (index == -1){
+            createContact(addressBook,contact);
+        }
+        return addressBook;
+    }
 
 }
