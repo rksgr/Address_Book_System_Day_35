@@ -1,8 +1,11 @@
 import model.AddressBook;
+import model.AddressBookSystem;
 import model.Contact;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import service.AddressBookService;
+
+import java.util.ArrayList;
 
 public class AddressBookTest {
 
@@ -82,11 +85,7 @@ public class AddressBookTest {
         AddressBook addressBook = new AddressBook();
         AddressBookService addressBookService = new AddressBookService();
 
-        // Add contacts to the address book
         addressBookService.createContact(addressBook,contact1);
-
-
-        // compare size before and after deletion
         int size_bef_contct_add = addressBook.getAddressBookList().size();
 
         //Add new contact
@@ -106,5 +105,51 @@ public class AddressBookTest {
 
         // size of address book should not increase after addition of duplicate contact
         Assertions.assertEquals(size_aft_contct_add,size_aft_duplicate_contct_add);
+    }
+    /*
+    Use Case 8: Search person in a city or state across multiple address book
+     */
+    @Test
+    public void whenPerson_searchedInACity_AcrossMultipleAddressBooks_shouldReturnListOfPersonNames(){
+        AddressBookSystem addressBookSystem = new AddressBookSystem();
+        Contact contact1 = new Contact("Arun","kumar","Leadenhall Street","Gangtok",
+                "Sikkim",1011,808989,"arun.kumaras@gmail.com");
+        AddressBook addressBook = new AddressBook("book");
+        // Add the contact to the address book
+        addressBook.getAddressBookList().add(contact1);
+        // Add the address book to the address book system
+        addressBookSystem.getAddressBookMap().put(addressBook.getAddr_book_name(),addressBook);
+
+        Contact contact2 = new Contact("Varun","kumar","Leader Street","Allahabad",
+                "Uttar Pradesh",1151,89898989,"varun.kumar@gmail.com");
+        AddressBook addressBook2 = new AddressBook("book2");
+        addressBook2.getAddressBookList().add(contact2);
+        addressBookSystem.getAddressBookMap().put(addressBook2.getAddr_book_name(),addressBook2);
+
+        Contact contact3 = new Contact("Arunesh","kumar","Ironwall Street","Sagar",
+                "Madhya Pradesh",111,89898989,"arun.kumar@gmail.com");
+        AddressBook addressBook3 = new AddressBook("book3");
+        addressBook3.getAddressBookList().add(contact3);
+        addressBookSystem.getAddressBookMap().put(addressBook3.getAddr_book_name(),addressBook3);
+
+        Contact contact4 = new Contact("Arun","kumar","Prince Street","Gangtok",
+                "Sikkim",211,89898979,"arun.kumar@gmail.com");
+        addressBook3.getAddressBookList().add(contact4);
+        addressBookSystem.getAddressBookMap().put(addressBook3.getAddr_book_name(),addressBook3);
+
+
+        Contact contact5 = new Contact("Arun","kumar","Wales Street","Gangtok",
+                "Sikkim",2151,80000979,"arun.kumar486@gmail.com");
+        AddressBook addressBook4 = new AddressBook("book4");
+        addressBook4.getAddressBookList().add(contact5);
+        addressBookSystem.getAddressBookMap().put(addressBook4.getAddr_book_name(),addressBook4);
+
+        AddressBookService addressBookService = new AddressBookService();
+        ArrayList<Contact> contactArrayList = addressBookService.searchPersonAcrossCityOrState(addressBookSystem,
+                "Arun","kumar","Gangtok","Sikkim");
+
+        // Get the size of arraylist containing contacts having same first and last name and living in same city and state
+        int size = contactArrayList.size();
+        Assertions.assertEquals(3,size);
     }
 }
