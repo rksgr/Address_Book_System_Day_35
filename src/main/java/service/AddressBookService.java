@@ -3,6 +3,9 @@ package service;
 import model.AddressBook;
 import model.AddressBookSystem;
 import model.Contact;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Scanner;
 
 public class AddressBookService {
@@ -134,13 +137,48 @@ public class AddressBookService {
     Use Case 7: Prevent duplicate entry of the same person in a particular address book
      */
     public AddressBook preventDuplicateEntry(AddressBook addressBook,Contact contact){
-        int index = -1;
-        // search for the person in the address book
-        index = searchExistingContact(addressBook, contact.getFirst_name(), contact.getLast_name());
-        if (index == -1){
+        boolean is_duplicate_entry = checkDuplicateEntry(addressBook,contact);
+        if (!is_duplicate_entry){
             createContact(addressBook,contact);
         }
         return addressBook;
+    }
+    // check if the contact already exists in address book
+    public boolean checkDuplicateEntry(AddressBook addressBook,Contact contact){
+        boolean isDuplicateContact = true;
+        int count = 0;
+        // search for the person in the address book
+        int no_of_contacts = addressBook.getAddressBookList().size();
+        for (int i=0;i<no_of_contacts;i++){
+            if (addressBook.getAddressBookList().get(i).equals(contact)){
+                break;
+            }
+            count++;
+        }
+        if (no_of_contacts == count){
+            isDuplicateContact = false;
+        }
+        return isDuplicateContact;
+    }
+    /*
+    Use Case 8: Search person by city or state across multiple address books
+     */
+    public ArrayList<Contact> searchPersonAcrossCityOrState(AddressBookSystem addressBookSystem,String person_first_name,
+                                                                  String person_last_name,String city_ser,String state_ser){
+        ArrayList<Contact> contactArrayList = new ArrayList<>();
+
+        Collection<AddressBook> addressBookCollection = addressBookSystem.getAddressBookMap().values();
+        addressBookCollection.forEach(addressBook -> {
+            Collection<Contact> contactCollection = addressBook.getAddressBookList();
+            contactCollection.forEach(contact -> {
+                if(contact.getState().equals(state_ser) && contact.getCity().equals(city_ser)) {
+                    if (contact.getFirst_name().equals(person_first_name) && contact.getLast_name().equals(person_last_name)) {
+                        contactArrayList.add(contact);
+                    }
+                }
+            });
+        });
+        return contactArrayList;
     }
 
 }
