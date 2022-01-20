@@ -1,8 +1,13 @@
 import model.AddressBook;
 import model.AddressBookSystem;
+import model.Contact;
 import service.AddressBookService;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class AddressBookMain {
+
     public static void main(String[] args) {
         System.out.println("Today we shall make Address Book System!");
         AddressBookSystem addressBookSystem = new AddressBookSystem();
@@ -15,7 +20,7 @@ public class AddressBookMain {
 
         addressBookService.addMultipleAddressBook(addressBookSystem,1);
         //int size2 = addressBookService.addMultipleAddressBook(addressBookSystem,3)
-          //          .getAddressBookMap().size();
+        //          .getAddressBookMap().size();
         int size2 = addressBookSystem.getAddressBookMap().size();
         System.out.println(" size before addition = "+size1);
         System.out.println(" size after addition = "+size2);
