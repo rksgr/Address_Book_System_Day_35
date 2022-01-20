@@ -85,4 +85,24 @@ public class Contact {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this){
+            return true;
+        }
+        if(!(obj instanceof Contact)){
+            return false;
+        }
+        Contact c = (Contact) obj;
+
+        return CharSequence.compare(first_name,c.getFirst_name())==0
+                && CharSequence.compare(last_name,c.getLast_name())==0
+                && CharSequence.compare(city,c.getCity())==0
+                && CharSequence.compare(state,c.getState())==0
+                && CharSequence.compare(address,c.getAddress())==0
+                && CharSequence.compare(email,c.getEmail())==0
+                && Integer.compare(zip,c.getZip())==0
+                && Double.compare(phone_num,c.getPhone_num())==0;
+    }
 }
