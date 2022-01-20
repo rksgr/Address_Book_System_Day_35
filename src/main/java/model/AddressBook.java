@@ -11,7 +11,7 @@ public class AddressBook {
     public AddressBook(String addr_book_name){
         this.addr_book_name = addr_book_name;
     }
-    
+
     public String getAddr_book_name() {
         return addr_book_name;
     }
