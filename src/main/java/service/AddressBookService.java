@@ -4,9 +4,7 @@ import model.AddressBook;
 import model.AddressBookSystem;
 import model.Contact;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Scanner;
+import java.util.*;
 
 public class AddressBookService {
 
@@ -180,5 +178,53 @@ public class AddressBookService {
         });
         return contactArrayList;
     }
+    /*
+    Use Case 9: View persons by city or state
+     */
+    // To view persons by city
+    public ArrayList<Contact> viewPersonsByCity(AddressBookSystem addressBookSystem,String city_ser){
+        Map<String, ArrayList<Contact>> stringArrayListMap = maintainDictPersonsByCity(addressBookSystem,true);
+        return stringArrayListMap.get(city_ser);
+    }
+    // To view persons by state
+    public ArrayList<Contact> viewPersonsByState(AddressBookSystem addressBookSystem,String state_ser){
+        Map<String, ArrayList<Contact>> stringArrayListMap = maintainDictPersonsByCity(addressBookSystem,false);
+        return stringArrayListMap.get(state_ser);
+    }
 
+    // Maintain Dictionary of persons by city or state
+    public Map<String,ArrayList<Contact>> maintainDictPersonsByCity(AddressBookSystem addressBookSystem, boolean city){
+        Map<String, ArrayList<Contact>> stringArrayListMap = new HashMap<>();
+        Collection<AddressBook> addressBookCollection = addressBookSystem.getAddressBookMap().values();
+
+        addressBookCollection.forEach(addressBook -> {              // for each address book
+            Collection<Contact> contactCollection = addressBook.getAddressBookList();
+
+            contactCollection.forEach(contact->{        // for each contact
+                String city_or_state = "";
+
+                // If city set to true, search by city else search by state
+                if (city){
+                    city_or_state = contact.getCity();
+                }else if (!city){
+                    city_or_state = contact.getState();
+                }
+
+                // If given city or state already present in dictionary
+                if (stringArrayListMap.containsKey(city)){
+                    ArrayList<Contact> contactArrayList1 = stringArrayListMap.get(city_or_state);
+                    contactArrayList1.add(contact);
+                    stringArrayListMap.replace(city_or_state,contactArrayList1);
+                }
+
+                // if given city or state not present in dictionary
+                else if(!stringArrayListMap.containsKey(city_or_state)){
+                    ArrayList<Contact> contactArrayList2 = new ArrayList<>();
+                    contactArrayList2.add(contact);
+                    stringArrayListMap.put(city_or_state,contactArrayList2);
+                }
+            });
+        });
+        return stringArrayListMap;
+    }
 }
