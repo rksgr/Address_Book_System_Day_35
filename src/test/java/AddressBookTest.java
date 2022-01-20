@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import service.AddressBookService;
 
 import java.util.ArrayList;
-
+import java.util.Map;
 public class AddressBookTest {
 
     /*
@@ -196,9 +196,60 @@ public class AddressBookTest {
 
         // Get the size of arraylist containing contacts having same first and last name and living in same city and state
         int size1 = contactArrayList1.size();
-        // continue heer
         int size2 = contactArrayList2.size();
         Assertions.assertEquals(3,size1);
-        Assertions.assertEquals(3,size2);
+        Assertions.assertEquals(1,size2);
+    }
+
+    /*
+    Use Case 10: Get number of contact persons by city or state
+     */
+    @Test
+    public void givenCityOrStateChoice_getCountOfAllPersonsInTheCityOrState(){
+        AddressBookSystem addressBookSystem = new AddressBookSystem();
+        Contact contact1 = new Contact("Arun","kumar","Leadenhall Street","London",
+                "England",1011,808989,"arun.kumaras@gmail.com");
+        AddressBook addressBook = new AddressBook("book");
+        // Add the contact to the address book
+        addressBook.getAddressBookList().add(contact1);
+        // Add the address book to the address book system
+        addressBookSystem.getAddressBookMap().put(addressBook.getAddr_book_name(),addressBook);
+
+        Contact contact2 = new Contact("Varun","kumar","Leader Street","Allahabad",
+                "Uttar Pradesh",1151,89898989,"varun.kumar@gmail.com");
+        AddressBook addressBook2 = new AddressBook("book2");
+        addressBook2.getAddressBookList().add(contact2);
+        addressBookSystem.getAddressBookMap().put(addressBook2.getAddr_book_name(),addressBook2);
+
+        Contact contact3 = new Contact("Arunesh","kumar","Ironwall Street","Sagar",
+                "Madhya Pradesh",111,89898989,"arun.kumar@gmail.com");
+        AddressBook addressBook3 = new AddressBook("book3");
+        addressBook3.getAddressBookList().add(contact3);
+        addressBookSystem.getAddressBookMap().put(addressBook3.getAddr_book_name(),addressBook3);
+
+        Contact contact4 = new Contact("Valmiki","kumar","Prince Street","Gangtok",
+                "Sikkim",211,89898979,"valmiki.kumar@gmail.com");
+        addressBook3.getAddressBookList().add(contact4);
+        addressBookSystem.getAddressBookMap().put(addressBook3.getAddr_book_name(),addressBook3);
+
+
+        Contact contact5 = new Contact("Aamir","khan","Wales Street","Nagpur",
+                "Maharashtra",2151,80000979,"aamir.kumar486@gmail.com");
+        AddressBook addressBook4 = new AddressBook("book4");
+        addressBook4.getAddressBookList().add(contact5);
+        addressBookSystem.getAddressBookMap().put(addressBook4.getAddr_book_name(),addressBook4);
+
+        AddressBookService addressBookService = new AddressBookService();
+
+        // To get person count by city set countByCity to true and to get count by state set countByCity to false,
+        Map<String,Integer> personCountByCity = addressBookService.getPersonCountByCityOrState(addressBookSystem,true);
+        Map<String,Integer> personCountByState = addressBookService.getPersonCountByCityOrState(addressBookSystem,false);
+
+        // Get the count of persons living in London city and Uttar Pradesh state
+        int size1 = personCountByCity.get("London");
+        int size2 = personCountByState.get("Uttar Pradesh");
+
+        Assertions.assertEquals(1,size1);
+        Assertions.assertEquals(1,size2);
     }
 }
