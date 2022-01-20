@@ -183,17 +183,17 @@ public class AddressBookService {
      */
     // To view persons by city
     public ArrayList<Contact> viewPersonsByCity(AddressBookSystem addressBookSystem,String city_ser){
-        Map<String, ArrayList<Contact>> stringArrayListMap = maintainDictPersonsByCity(addressBookSystem,true);
+        Map<String, ArrayList<Contact>> stringArrayListMap = maintainDictPersonsByCityOrState(addressBookSystem,true);
         return stringArrayListMap.get(city_ser);
     }
     // To view persons by state
     public ArrayList<Contact> viewPersonsByState(AddressBookSystem addressBookSystem,String state_ser){
-        Map<String, ArrayList<Contact>> stringArrayListMap = maintainDictPersonsByCity(addressBookSystem,false);
+        Map<String, ArrayList<Contact>> stringArrayListMap = maintainDictPersonsByCityOrState(addressBookSystem,false);
         return stringArrayListMap.get(state_ser);
     }
 
     // Maintain Dictionary of persons by city or state
-    public Map<String,ArrayList<Contact>> maintainDictPersonsByCity(AddressBookSystem addressBookSystem, boolean city){
+    public Map<String,ArrayList<Contact>> maintainDictPersonsByCityOrState(AddressBookSystem addressBookSystem, boolean record_by_city){
         Map<String, ArrayList<Contact>> stringArrayListMap = new HashMap<>();
         Collection<AddressBook> addressBookCollection = addressBookSystem.getAddressBookMap().values();
 
@@ -204,14 +204,14 @@ public class AddressBookService {
                 String city_or_state = "";
 
                 // If city set to true, search by city else search by state
-                if (city){
+                if (record_by_city){
                     city_or_state = contact.getCity();
-                }else if (!city){
+                }else if (!record_by_city){
                     city_or_state = contact.getState();
                 }
 
                 // If given city or state already present in dictionary
-                if (stringArrayListMap.containsKey(city)){
+                if (stringArrayListMap.containsKey(city_or_state)){
                     ArrayList<Contact> contactArrayList1 = stringArrayListMap.get(city_or_state);
                     contactArrayList1.add(contact);
                     stringArrayListMap.replace(city_or_state,contactArrayList1);
@@ -226,5 +226,37 @@ public class AddressBookService {
             });
         });
         return stringArrayListMap;
+    }
+    /*
+    Use Case 10: Get number of contact persons by city or state
+     */
+
+    // Returns Dictionary of count of persons by city or state
+    public Map<String,Integer> getPersonCountByCityOrState(AddressBookSystem addressBookSystem, boolean countByCity){
+        Map<String, Integer> stringIntegerMap = new HashMap<>();
+        Collection<AddressBook> addressBookCollection = addressBookSystem.getAddressBookMap().values();
+
+        addressBookCollection.forEach(addressBook -> {              // for each address book
+            Collection<Contact> contactCollection = addressBook.getAddressBookList();
+            contactCollection.forEach(contact->{        // for each contact
+                String city_or_state = "";
+
+                // If city set to true, search by city else search by state
+                if (countByCity)    {city_or_state = contact.getCity();
+                }else if (!countByCity)     {city_or_state = contact.getState();}
+
+                // If given city or state already present in dictionary
+                if (stringIntegerMap.containsKey(city_or_state)){
+                    int size1 = stringIntegerMap.get(city_or_state);
+                    stringIntegerMap.replace(city_or_state,size1+1);
+                }
+
+                // if given city or state not present in dictionary
+                else if(!stringIntegerMap.containsKey(city_or_state)){
+                    stringIntegerMap.put(city_or_state,1);
+                }
+            });
+        });
+        return stringIntegerMap;
     }
 }
