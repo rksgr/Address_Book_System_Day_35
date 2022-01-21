@@ -230,7 +230,6 @@ public class AddressBookService {
     /*
     Use Case 10: Get number of contact persons by city or state
      */
-
     // Returns Dictionary of count of persons by city or state
     public Map<String,Integer> getPersonCountByCityOrState(AddressBookSystem addressBookSystem, boolean countByCity){
         Map<String, Integer> stringIntegerMap = new HashMap<>();
@@ -258,5 +257,16 @@ public class AddressBookService {
             });
         });
         return stringIntegerMap;
+    }
+    /*
+    Use Case 11: Sort entries in address book alphabetically by person's name
+     */
+    public ArrayList<Contact> sortAddressBookByPersonName(AddressBook addressBook){
+        ArrayList<Contact> contactArrayList = addressBook.getAddressBookList();
+        Collections.sort(contactArrayList);
+        contactArrayList.forEach(contact -> {
+            System.out.println(contact.toString());
+        });
+        return contactArrayList;
     }
 }
