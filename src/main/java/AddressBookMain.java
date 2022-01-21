@@ -5,7 +5,8 @@ import service.AddressBookService;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+import java.util.Collections;
+import java.util.Comparator;
 public class AddressBookMain {
 
     public static void main(String[] args) {
@@ -16,13 +17,14 @@ public class AddressBookMain {
         AddressBook addressBook = new AddressBook();
 
         // Get the size of addressBookSystem before and after addition of address books
-        int size1 = addressBookSystem.getAddressBookMap().size();
+        //int size1 = addressBookSystem.getAddressBookMap().size();
 
-        addressBookService.addMultipleAddressBook(addressBookSystem,1);
+        //addressBookService.addMultipleAddressBook(addressBookSystem,1);
         //int size2 = addressBookService.addMultipleAddressBook(addressBookSystem,3)
         //          .getAddressBookMap().size();
-        int size2 = addressBookSystem.getAddressBookMap().size();
-        System.out.println(" size before addition = "+size1);
-        System.out.println(" size after addition = "+size2);
+        //int size2 = addressBookSystem.getAddressBookMap().size();
+        //System.out.println(" size before addition = "+size1);
+        //System.out.println(" size after addition = "+size2);
     }
 }
+
