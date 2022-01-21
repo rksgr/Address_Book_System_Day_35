@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import service.AddressBookService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 public class AddressBookTest {
 
@@ -251,5 +252,38 @@ public class AddressBookTest {
 
         Assertions.assertEquals(1,size1);
         Assertions.assertEquals(1,size2);
+    }
+    /*
+    Use Case 11: Sort address book entries alphabetically
+     */
+    @Test
+    public void givenAddressBook_WhenSortedAlphabeticallyAsPerFirstName_ShouldReturnFirstAlphabeticContactAsPerFirstNameAsFirstContact(){
+        Contact contact1 = new Contact("Altaf", "kumar", "Leadenhall Street", "London",
+                "England", 1011, 808989, "altaf.kumaras@gmail.com");
+        AddressBook addressBook = new AddressBook("book");
+
+        Contact contact2 = new Contact("Varun", "kumar", "Leader Street", "Allahabad",
+                "Uttar Pradesh", 1151, 89898009, "varun.kumar@gmail.com");
+
+        Contact contact3 = new Contact("Arunesh", "kumar", "Ironwall Street", "Sagar",
+                "Madhya Pradesh", 111, 877778989, "arun.kumar@gmail.com");
+
+        Contact contact4 = new Contact("Valmiki", "kumar", "Prince Street", "Gangtok",
+                "Sikkim", 211, 892222979, "valmiki.kumar@gmail.com");
+
+        Contact contact5 = new Contact("Krishna", "kumar", "Alexander Street", "Jodhpur",
+                "Rajasthan", 211, 89638979, "krishna.kumar@gmail.com");
+        addressBook.getAddressBookList().add(contact1);
+        addressBook.getAddressBookList().add(contact2);
+        addressBook.getAddressBookList().add(contact3);
+        addressBook.getAddressBookList().add(contact4);
+        addressBook.getAddressBookList().add(contact5);
+
+        AddressBookService addressBookService = new AddressBookService();
+
+        ArrayList<Contact> contactArrayList  = addressBookService.sortAddressBookByPersonName(addressBook);
+
+        String third_name_in_list = contactArrayList.get(2).getFirst_name();
+        Assertions.assertEquals("Krishna",third_name_in_list);
     }
 }
