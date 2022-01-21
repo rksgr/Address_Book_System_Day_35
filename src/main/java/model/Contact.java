@@ -1,6 +1,6 @@
 package model;
 
-public class Contact {
+public class Contact implements Comparable<Contact>{
     private String first_name;
     private String last_name;
     private String address;
@@ -9,6 +9,16 @@ public class Contact {
     private int zip;
     private double phone_num;
     private String email;
+
+    @Override
+    public int compareTo(Contact contact){
+        return this.getFirst_name().compareToIgnoreCase(contact.getFirst_name());
+    }
+    @Override
+    public String toString(){
+        String format = String.format("(%s,%s,%s,%s,%s,%d,%f,%s)", first_name, last_name, address, city, state, zip, phone_num, email);
+        return format;
+    }
 
     public Contact(String first_name, String last_name, String address, String city, String state, int zip,
                    double phone_num, String email) {
