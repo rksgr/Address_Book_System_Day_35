@@ -4,6 +4,7 @@ import model.AddressBook;
 import model.AddressBookSystem;
 import model.Contact;
 
+import java.io.*;
 import java.util.*;
 
 public class AddressBookService {
@@ -299,5 +300,41 @@ public class AddressBookService {
             System.out.println(contact.toString());
         });
         return contactArrayList;
+    }
+
+    /*
+    Use Case 13: Read or write the address book with contact of persons into a file using file io
+     */
+    public void writeAddressBookIntoFile(AddressBook addressBook, File file) {
+
+        // create a new file writer object
+        try (FileWriter fileWriter = new FileWriter(file)){
+            // Convert each contact present in address book into string format and print to file
+            addressBook.getAddressBookList().forEach(contact-> {
+                try {
+                    fileWriter.write(contact.toString()+"\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    // Read from a file
+    public int readAddressBookFromFile(File file) throws FileNotFoundException {
+        int tot_lines = 0;
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(file))){
+            String str;
+
+            // Increment total line count by one till buffered reader able to read new lines
+            while((str = bufferedReader.readLine()) != null)   {
+                tot_lines++;
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return tot_lines;
     }
 }
