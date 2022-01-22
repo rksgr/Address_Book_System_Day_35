@@ -14,9 +14,11 @@ public class Contact implements Comparable<Contact>{
     public int compareTo(Contact contact){
         return this.getFirst_name().compareToIgnoreCase(contact.getFirst_name());
     }
+
     @Override
     public String toString(){
-        String format = String.format("(%s,%s,%s,%s,%s,%d,%f,%s)", first_name, last_name, address, city, state, zip, phone_num, email);
+        String format = String.format("(%s,%s,%s,%s,%s,%d,%.0f,%s)",
+                                        first_name, last_name, address, city, state, zip, phone_num, email);
         return format;
     }
 
