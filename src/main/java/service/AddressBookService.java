@@ -264,6 +264,37 @@ public class AddressBookService {
     public ArrayList<Contact> sortAddressBookByPersonName(AddressBook addressBook){
         ArrayList<Contact> contactArrayList = addressBook.getAddressBookList();
         Collections.sort(contactArrayList);
+
+        //Print the entries to the console after sorting
+        contactArrayList.forEach(contact -> {
+            System.out.println(contact.toString());
+        });
+        return contactArrayList;
+    }
+    /*
+    Use Case 12: Sort entries in address book by city, state or zip
+     */
+    public ArrayList<Contact> sortAddressBookByCityOrStateOrZip(AddressBook addressBook, int sortUsingParamIndx){
+        ArrayList<Contact> contactArrayList = addressBook.getAddressBookList();
+
+        Collections.sort(contactArrayList, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact contact1, Contact contact2) {
+                int result = 0;
+                if(sortUsingParamIndx == 3){
+                    // sort using city
+                    result = contact1.getCity().compareToIgnoreCase(contact2.getCity());
+
+                }else if (sortUsingParamIndx == 4){
+                    // sort using state
+                    result = contact1.getState().compareToIgnoreCase(contact2.getState());
+                }else if (sortUsingParamIndx == 5){
+                    // sort using zip
+                    result = contact1.getZip() - contact2.getZip();
+                }
+                return result;
+            }
+        });
         contactArrayList.forEach(contact -> {
             System.out.println(contact.toString());
         });
