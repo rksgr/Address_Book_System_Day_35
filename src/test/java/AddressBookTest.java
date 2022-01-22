@@ -286,4 +286,43 @@ public class AddressBookTest {
         String third_name_in_list = contactArrayList.get(2).getFirst_name();
         Assertions.assertEquals("Krishna",third_name_in_list);
     }
+
+    /*
+    Use Case 12: Sort address book entries by city, state or zip
+     */
+    @Test
+    public void givenAddressBook_WhenSortedAsPerCityOrStateOrZip_ShouldReturnAsPerCityOrStateOrZip(){
+        Contact contact1 = new Contact("Altaf", "kumar", "Leadenhall Street", "London",
+                "England", 103711, 808989, "altaf.kumaras@gmail.com");
+        AddressBook addressBook = new AddressBook("book");
+
+        Contact contact2 = new Contact("Varun", "kumar", "Leader Street", "Allahabad",
+                "Uttar Pradesh", 115751, 89898009, "varun.kumar@gmail.com");
+
+        Contact contact3 = new Contact("Arunesh", "kumar", "Ironwall Street", "Sagar",
+                "Madhya Pradesh", 110921, 877778989, "arun.kumar@gmail.com");
+
+        Contact contact4 = new Contact("Valmiki", "kumar", "Prince Street", "Gangtok",
+                "Sikkim", 215251, 892222979, "valmiki.kumar@gmail.com");
+
+        Contact contact5 = new Contact("Krishna", "kumar", "Alexander Street", "Jodhpur",
+                "Rajasthan", 232541, 89638979, "krishna.kumar@gmail.com");
+        addressBook.getAddressBookList().add(contact1);
+        addressBook.getAddressBookList().add(contact2);
+        addressBook.getAddressBookList().add(contact3);
+        addressBook.getAddressBookList().add(contact4);
+        addressBook.getAddressBookList().add(contact5);
+
+        AddressBookService addressBookService = new AddressBookService();
+
+        // sort address book as per city
+        ArrayList<Contact> contactArrayList  = addressBookService.sortAddressBookByCityOrStateOrZip(addressBook,3);
+        String first_city_in_list = contactArrayList.get(0).getCity();
+        Assertions.assertEquals("Allahabad",first_city_in_list);
+
+        // sort address book as per zip
+        ArrayList<Contact> contactArrayList1  = addressBookService.sortAddressBookByCityOrStateOrZip(addressBook,5);
+        int second_zip = contactArrayList1.get(1).getZip();
+        Assertions.assertEquals(110921,second_zip);
+    }
 }
