@@ -1,5 +1,8 @@
 package service;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
 import model.AddressBook;
 import model.AddressBookSystem;
 import model.Contact;
@@ -333,6 +336,60 @@ public class AddressBookService {
                 tot_lines++;
             }
         }catch(IOException e){
+            e.printStackTrace();
+        }
+        return tot_lines;
+    }
+
+    /*
+    Use Case 14: Read or Write the address book with persons contact as a CSV file
+     */
+    public void writeAddressBookIntoCSVFile(AddressBook addressBook, File file) {
+
+        try{
+            // create a new file writer object
+            FileWriter fileWriter = new FileWriter(file);
+
+            CSVWriter csvWriter = new CSVWriter(fileWriter);
+            List<String[]> list_str_cont = new ArrayList<>();
+
+            // Convert each contact present in address book into string format and add to list
+            addressBook.getAddressBookList().forEach(contact-> {
+                String[] contact_str_list =new String[] {contact.getFirst_name(), contact.getLast_name(), contact.getAddress()
+                , contact.getCity(), contact.getState(), contact.getCity(),String.valueOf(contact.getZip()),
+                String.valueOf(contact.getPhone_num())};
+
+            list_str_cont.add(contact_str_list);
+            });
+
+            // Write list into the file using CSVWriter object
+            csvWriter.writeAll(list_str_cont);
+            csvWriter.close();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Returns total number of lines in file and prints each entry of CSV file
+    public int readAddressBookFromCSVFile(File file) {
+        int tot_lines = 0;
+        try {
+            // Parse a CSV file into Buffered Reader class constructor
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            CSVReader csvReader = new CSVReader(new FileReader(file));
+
+            // Create string array to store each element of contact
+            String[] nextLine = new String[8];
+            while ((nextLine = csvReader.readNext()) != null) {
+
+                // To print each element of the contact
+                for (String contct:nextLine){
+                    System.out.println(contct);
+                }
+                tot_lines++;
+                }
+            }
+        catch(CsvValidationException | IOException e){
             e.printStackTrace();
         }
         return tot_lines;
