@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import service.AddressBookService;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -324,5 +326,48 @@ public class AddressBookTest {
         ArrayList<Contact> contactArrayList1  = addressBookService.sortAddressBookByCityOrStateOrZip(addressBook,5);
         int second_zip = contactArrayList1.get(1).getZip();
         Assertions.assertEquals(110921,second_zip);
+    }
+
+    /*
+    Use Case 13: Read or write the address book containing contacts into a file using File IO
+     */
+    @Test
+    public void givenAddressBook_WhenWrittenToFile_ShouldContainAllContacts() throws FileNotFoundException {
+        Contact contact1 = new Contact("Altaf", "kumar", "Leadenhall Street", "London",
+                "England", 103711, 808989, "altaf.kumaras@gmail.com");
+        AddressBook addressBook = new AddressBook("book");
+
+        Contact contact2 = new Contact("Varun", "kumar", "Leader Street", "Allahabad",
+                "Uttar Pradesh", 115751, 89898009, "varun.kumar@gmail.com");
+
+        Contact contact3 = new Contact("Arunesh", "kumar", "Ironwall Street", "Sagar",
+                "Madhya Pradesh", 110921, 877778989, "arun.kumar@gmail.com");
+
+        Contact contact4 = new Contact("Valmiki", "kumar", "Prince Street", "Gangtok",
+                "Sikkim", 215251, 892222979, "valmiki.kumar@gmail.com");
+
+        Contact contact5 = new Contact("Krishna", "kumar", "Alexander Street", "Jodhpur",
+                "Rajasthan", 232541, 89638979, "krishna.kumar@gmail.com");
+        addressBook.getAddressBookList().add(contact1);
+        addressBook.getAddressBookList().add(contact2);
+        addressBook.getAddressBookList().add(contact3);
+        addressBook.getAddressBookList().add(contact4);
+        addressBook.getAddressBookList().add(contact5);
+
+        AddressBookService addressBookService = new AddressBookService();
+
+        // Write address book entries into file
+        File file = new File("C:\\Users\\Renu\\Desktop\\AddressBookFile.txt");
+        addressBookService.writeAddressBookIntoFile(addressBook,file);
+
+        // Read contacts from file
+        int total_contacts  = 0;
+        try {
+            total_contacts = addressBookService.readAddressBookFromFile(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Assertions.assertEquals(5,total_contacts);
     }
 }
