@@ -1,12 +1,14 @@
+import com.opencsv.CSVWriter;
 import model.AddressBook;
 import model.AddressBookSystem;
 import model.Contact;
 import service.AddressBookService;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.List;
 public class AddressBookMain {
 
     public static void main(String[] args) {
@@ -47,6 +49,10 @@ public class AddressBookMain {
         addressBook.getAddressBookList().add(contact5);
 
         AddressBookService addressBookService = new AddressBookService();
+
+        // Write address book entries into file
+        File file = new File("C:\\Users\\Renu\\Desktop\\DAddressBookFile.txt");
+        addressBookService.writeAddressBookIntoCSVFile(addressBook,file);
     }
 }
 
