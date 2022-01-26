@@ -1,10 +1,10 @@
 import model.AddressBook;
 import model.AddressBookSystem;
 import model.Contact;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import service.AddressBookService;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -275,6 +275,8 @@ public class AddressBookTest {
 
         Contact contact5 = new Contact("Krishna", "kumar", "Alexander Street", "Jodhpur",
                 "Rajasthan", 211, 89638979, "krishna.kumar@gmail.com");
+
+        // Add all the contacts to the address book list
         addressBook.getAddressBookList().add(contact1);
         addressBook.getAddressBookList().add(contact2);
         addressBook.getAddressBookList().add(contact3);
@@ -309,6 +311,8 @@ public class AddressBookTest {
 
         Contact contact5 = new Contact("Krishna", "kumar", "Alexander Street", "Jodhpur",
                 "Rajasthan", 232541, 89638979, "krishna.kumar@gmail.com");
+
+        // Add all the contacts to the address book list
         addressBook.getAddressBookList().add(contact1);
         addressBook.getAddressBookList().add(contact2);
         addressBook.getAddressBookList().add(contact3);
@@ -348,6 +352,8 @@ public class AddressBookTest {
 
         Contact contact5 = new Contact("Krishna", "kumar", "Alexander Street", "Jodhpur",
                 "Rajasthan", 232541, 89638979, "krishna.kumar@gmail.com");
+
+        // Add all the contacts to the address book list
         addressBook.getAddressBookList().add(contact1);
         addressBook.getAddressBookList().add(contact2);
         addressBook.getAddressBookList().add(contact3);
@@ -386,9 +392,10 @@ public class AddressBookTest {
 
         Contact contact4 = new Contact("Valmiki", "kumar", "Prince Street", "Gangtok",
                 "Sikkim", 215251, 892222979, "valmiki.kumar@gmail.com");
-
         Contact contact5 = new Contact("Krishna", "kumar", "Alexander Street", "Jodhpur",
                 "Rajasthan", 232541, 89638979, "krishna.kumar@gmail.com");
+
+        // Add all the contacts to the address book list
         addressBook.getAddressBookList().add(contact1);
         addressBook.getAddressBookList().add(contact2);
         addressBook.getAddressBookList().add(contact3);
@@ -404,5 +411,41 @@ public class AddressBookTest {
         // Assert the number of contacts in file
         int total_contacts  = addressBookService.readAddressBookFromCSVFile(file);
         Assertions.assertEquals(5,total_contacts);
+    }
+    /*
+    Use Case 15: Read or write the address book with person's contact as JSON file
+     */
+    @Test
+    public void givenAddressBookContacts_WhenWrittenToJSONFile_ShouldContainContactDetails() throws FileNotFoundException {
+        Contact contact1 = new Contact("Altaf", "kumar", "Leadenhall Street", "London",
+                "England", 103711, 808989, "altaf.kumaras@gmail.com");
+        Contact contact2 = new Contact("Varun", "kumar", "Leader Street", "Allahabad",
+                "Uttar Pradesh", 115751, 89898009, "varun.kumar@gmail.com");
+        Contact contact3 = new Contact("Arunesh", "kumar", "Ironwall Street", "Sagar",
+                "Madhya Pradesh", 110921, 877778989, "arun.kumar@gmail.com");
+        Contact contact4 = new Contact("Valmiki", "kumar", "Prince Street", "Gangtok",
+                "Sikkim", 215251, 892222979, "valmiki.kumar@gmail.com");
+        Contact contact5 = new Contact("Krishna", "kumar", "Alexander Street", "Jodhpur",
+                "Rajasthan", 232541, 89638979, "krishna.kumar@gmail.com");
+
+
+        AddressBook addressBook = new AddressBook("book");
+
+        // Add all the contacts to the address book list
+        addressBook.getAddressBookList().add(contact1);
+        addressBook.getAddressBookList().add(contact2);
+        addressBook.getAddressBookList().add(contact3);
+        addressBook.getAddressBookList().add(contact4);
+        addressBook.getAddressBookList().add(contact5);
+
+        AddressBookService addressBookService = new AddressBookService();
+
+        // Write address book entries into JSON file
+        File file = new File("C:\\Users\\Renu\\Desktop\\JSONAddressBookFile.json");
+        addressBookService.writeAddressBookIntoJSONFile(addressBook,file);
+
+        // Assert the number of contacts in file
+        ArrayList<Contact> contactArrayList  = addressBookService.readAddressBookFromJSONFile(file);
+        Assertions.assertEquals(5,contactArrayList.size());
     }
 }
