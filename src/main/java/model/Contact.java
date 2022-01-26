@@ -10,6 +10,8 @@ public class Contact implements Comparable<Contact>{
     private double phone_num;
     private String email;
 
+
+
     @Override
     public int compareTo(Contact contact){
         return this.getFirst_name().compareToIgnoreCase(contact.getFirst_name());
