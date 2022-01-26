@@ -6,7 +6,9 @@ import com.opencsv.exceptions.CsvValidationException;
 import model.AddressBook;
 import model.AddressBookSystem;
 import model.Contact;
-
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.util.*;
 
@@ -306,7 +308,7 @@ public class AddressBookService {
     }
 
     /*
-    Use Case 13: Read or write the address book with contact of persons into a file using file io
+    Use Case 13: Read or write the address book with contact of persons into a file using File io
      */
     public void writeAddressBookIntoFile(AddressBook addressBook, File file) {
 
@@ -373,9 +375,9 @@ public class AddressBookService {
     // Returns total number of lines in file and prints each entry of CSV file
     public int readAddressBookFromCSVFile(File file) {
         int tot_lines = 0;
+
         try {
-            // Parse a CSV file into Buffered Reader class constructor
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+
             CSVReader csvReader = new CSVReader(new FileReader(file));
 
             // Create string array to store each element of contact
@@ -386,12 +388,75 @@ public class AddressBookService {
                 for (String contct:nextLine){
                     System.out.println(contct);
                 }
-                tot_lines++;
+                tot_lines++;        // Increment total lines by one
                 }
             }
         catch(CsvValidationException | IOException e){
             e.printStackTrace();
         }
         return tot_lines;
+    }
+    /*
+    Use Case 15: Read or Write the address book with persons contact as a JSON file
+    */
+
+    public void writeAddressBookIntoJSONFile(AddressBook addressBook, File file) {
+        // create a new json object
+        JSONObject jsonObject = new JSONObject();
+
+        // Put contact index as key and contact as value
+        for(int i=0;i<addressBook.getAddressBookList().size();i++){
+
+            Contact contact = addressBook.getAddressBookList().get(i);
+            Map myMap = new HashMap();
+            myMap.put("first_name",contact.getFirst_name());
+            myMap.put("last_name",contact.getLast_name());
+            myMap.put("address",contact.getAddress());
+            myMap.put("city",contact.getCity());
+            myMap.put("state",contact.getState());
+            myMap.put("zip",contact.getZip());
+            myMap.put("phone_no",contact.getPhone_num());
+            myMap.put("email",contact.getEmail());
+
+            jsonObject.put(i,myMap);
+        }
+
+        try {
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(jsonObject.toString());
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<Contact> readAddressBookFromJSONFile(File file) {
+        ArrayList<Contact> contactArrayList = new ArrayList<>();
+        // Create a JSONparser object
+        JSONParser jsonParser = new JSONParser();
+
+        try{
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader(file));
+            int size = jsonObject.size();
+            for(int i=0;i<size;i++){
+                Map contact_map = (Map) jsonObject.get("0");
+
+                String first_name = (String) contact_map.get("first_name");
+                String last_name = (String) contact_map.get("last_name");
+                String address = (String) contact_map.get("address");
+                String city = (String) contact_map.get("city");
+                String state = (String) contact_map.get("state");
+                Long zip = (Long) contact_map.get("zip");
+                double phone_no = (Double) contact_map.get("phone_no");
+                String email_id = (String) contact_map.get("email_id");
+                Contact contact = new Contact(first_name,last_name,address,city,state, Math.toIntExact(zip),phone_no,email_id);
+                contactArrayList.add(contact);
+            }
+        }
+        catch(FileNotFoundException e){e.printStackTrace();}
+        catch(IOException e){e.printStackTrace();}
+        catch(ParseException e){e.printStackTrace();}
+
+        return contactArrayList;
     }
 }
