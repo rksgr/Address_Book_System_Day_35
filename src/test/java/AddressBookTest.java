@@ -4,6 +4,7 @@ import model.Contact;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import service.AddressBookDBService;
 import service.AddressBookService;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -457,5 +458,29 @@ public class AddressBookTest {
         AddressBookService addressBookService = new AddressBookService();
         List<Contact> contactList = addressBookService.readAddressBookData(AddressBookService.IOService.DB_IO);
         Assertions.assertEquals(5,contactList.size());
+    }
+    /*
+    Use Case 17: Update Contact information in address book and ensure contact information in memory is in sync with DB
+     */
+    @Test
+    public void givenAddressBookDB_whenContactInfoUpdated_shouldContainUpdatedContact(){
+        AddressBookService addressBookService = new AddressBookService();
+        // change second entry of the contact
+        // check default of double value
+        Contact contact_old_det = new Contact("shivraj","singh","shyamla hills","bhopal"
+                                    ,"Madhya Pradesh",489569,0.0,null);
+
+        Contact contact_new_det = new Contact("shivraj","singh","shyamla hills","bhopal"
+                ,"Madhya Pradesh",489569,0.0,"sivraj.singh@gmail.com");
+
+        // update the contact detail in the address book
+        addressBookService.updateAddressBookData(AddressBookService.IOService.DB_IO,contact_old_det,
+                contact_new_det);
+
+        // check if the email field contains updated email
+        List<Contact> contactList = addressBookService.readAddressBookContact(AddressBookService.IOService.DB_IO
+                            ,contact_new_det.getFirst_name(),contact_new_det.getLast_name());
+
+        Assertions.assertEquals(contact_new_det.getEmail(),contactList.get(0).getEmail());
     }
 }
