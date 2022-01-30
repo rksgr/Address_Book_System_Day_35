@@ -13,11 +13,14 @@ import java.io.*;
 import java.util.*;
 
 public class AddressBookService {
+
+
     public enum IOService{
         CONSOLE_IO,FILE_IO,DB_IO,REST_IO;
     }
 
     private List<Contact> contactList;
+    private Contact contact;
 
     /*
     Use Case 1: Create a Contact in address book containing contact details
@@ -473,5 +476,20 @@ public class AddressBookService {
             this.contactList = new AddressBookDBService().readData();
         }
         return this.contactList;
+    }
+    /*
+    Use Case 17: Update Contact information in address book and ensure contact information in memory is in sync with DB
+     */
+    public void updateAddressBookData(IOService ioService, Contact contact_old_det, Contact contact_new_det) {
+        if(ioService.equals(IOService.DB_IO)){
+            new AddressBookDBService().updateData(contact_old_det,contact_new_det);
+        }
+    }
+    // Read contact details from address book for a given first name and last name
+    public List<Contact> readAddressBookContact(IOService ioService,String first_name,String last_name) {
+        if(ioService.equals(IOService.DB_IO)){
+            this.contactList = new AddressBookDBService().readData(first_name,last_name);
+        }
+        return contactList;
     }
 }
