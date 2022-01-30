@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
+import java.util.List;
 public class AddressBookTest {
 
     /*
@@ -447,5 +448,14 @@ public class AddressBookTest {
         // Assert the number of contacts in file
         ArrayList<Contact> contactArrayList  = addressBookService.readAddressBookFromJSONFile(file);
         Assertions.assertEquals(5,contactArrayList.size());
+    }
+    /*
+    Use Case 16: Retrieve all the entries from the database
+     */
+    @Test
+    public void givenAddressBookDB_WhenRetrieved_ShouldMatchPersonsCount(){
+        AddressBookService addressBookService = new AddressBookService();
+        List<Contact> contactList = addressBookService.readAddressBookData(AddressBookService.IOService.DB_IO);
+        Assertions.assertEquals(5,contactList.size());
     }
 }
