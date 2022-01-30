@@ -13,6 +13,11 @@ import java.io.*;
 import java.util.*;
 
 public class AddressBookService {
+    public enum IOService{
+        CONSOLE_IO,FILE_IO,DB_IO,REST_IO;
+    }
+
+    private List<Contact> contactList;
 
     /*
     Use Case 1: Create a Contact in address book containing contact details
@@ -430,6 +435,7 @@ public class AddressBookService {
         }
     }
 
+    // Read address book entries from the JSON file
     public ArrayList<Contact> readAddressBookFromJSONFile(File file) {
         ArrayList<Contact> contactArrayList = new ArrayList<>();
         // Create a JSONparser object
@@ -458,5 +464,14 @@ public class AddressBookService {
         catch(ParseException e){e.printStackTrace();}
 
         return contactArrayList;
+    }
+    /*
+    Use Case 16: Retrieve all the entries from the database
+     */
+    public List<Contact> readAddressBookData(IOService ioService){
+        if(ioService.equals(IOService.DB_IO)){
+            this.contactList = new AddressBookDBService().readData();
+        }
+        return this.contactList;
     }
 }
