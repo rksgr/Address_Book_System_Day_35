@@ -466,7 +466,7 @@ public class AddressBookService {
         return contactArrayList;
     }
     /*
-    Use Case 16: Retrieve all the entries from the database
+    Use Case 16: Make connection to the database and retrieve all the entries from the database
      */
     public List<Contact> readAddressBookData(IOService ioService){
         if(ioService.equals(IOService.DB_IO)){
